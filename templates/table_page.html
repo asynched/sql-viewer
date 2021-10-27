@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SQL Viewer | {{ tablename }}</title>
+  <script src="https://cdn-tailwindcss.vercel.app/3.0.0-alpha.1"></script>
+</head>
+<body class="mx-auto max-w-screen-xl">
+  <h1 class="my-8 text-4xl font-bold tracking-tighter">{{ tablename }}</h1>
+
+  
+  <form class="flex items-center justify-between" action="/{{ tablename }}" method="GET">
+    <p class="my-8 text-indigo-600"><a href="/">Go back</a></p>
+    <div class="flex items-center gap-8">
+      <div class="flex items-center gap-4">
+        <label for="pagesize">Page size</label>
+        <select class="py-2 px-4 rounded" name="pagesize">
+          <option value="16">16</option>
+          <option value="32">32</option>
+          <option value="48">48</option>
+        </select>
+      </div>
+      <button class="py-2 px-4 bg-indigo-600 text-white rounded">Search</button>
+    </div>
+    <input type="hidden" name="offset" value="{{request.args.get('offset', 0)}}" />
+  </form>
+
+  <h2 class="my-8 text-3xl font-bold tracking-tighter">Records - {{ tablename }}</h2>
+  <table class="w-full border rounded">
+    <thead class="text-left">
+      <tr class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white">
+        {% for item in schema%}
+        <th class="py-2 px-4">{{ item['column'] }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in results %}
+        <tr class="odd:bg-gray-100 border-b">
+          {% for _, value in item.items() %}
+          <td class="py-2 px-4">{{ value }}</td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <form action="/{{ tablename }}">
+    <input type="hidden" name="pagesize" value="{{ request.args.get('pagesize', 16) }}" />
+    <button value="{{ previous_page }}" name="offset"><</button>
+    {% for i in range(pages) %}
+      <button name="offset" value="{{ i }}">{{ i + 1 }}</button>
+    {% endfor %}
+    <button value="{{ next_page }}" name="offset">></button>
+
+  </form>
+</body>
+</html>
