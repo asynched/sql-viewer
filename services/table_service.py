@@ -1,5 +1,5 @@
 from database import Database
-from utils import parse_schema, parse_results
+from utils import parse_column_names, parse_query, parse_schema, parse_results
 
 
 class TableService:
@@ -76,3 +76,22 @@ class TableService:
         pages = results[0][0]
 
         return pages
+
+    def get_database_schema(self):
+        tables = self.get_tables()
+
+        database_schema = []
+
+        for table in tables:
+            database_schema.append(
+                {"table": table, "schema": self.get_table_schema(table)}
+            )
+
+        return database_schema
+
+    def execute_query(self, query: str):
+        results = self.database.cursor.execute(query).fetchall()
+        column_names = parse_column_names(self.database.cursor.description)
+        parsed_results = parse_query(results, column_names)
+        schema = [{"column": column} for column in column_names]
+        return [parsed_results, schema]

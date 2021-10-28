@@ -18,14 +18,7 @@ def get_tables():
 
 @table_controller.get("/tables/<tablename>")
 def get_table(tablename):
-    tables = table_service.get_tables()
-    database_schema = []
-
-    for table in tables:
-        database_schema.append(
-            {"table": table, "schema": table_service.get_table_schema(table)}
-        )
-
+    database_schema = table_service.get_database_schema()
     schema = table_service.get_table_schema(tablename)
     entries = table_service.get_table_entries(
         tablename,
@@ -41,6 +34,17 @@ def get_table(tablename):
     )
 
 
-@table_controller.get("/editor")
-def get_editor():
-    return render_template("editor.html")
+@table_controller.post("/tables/<tablename>")
+def execute_query(tablename: str):
+    query = request.form.get("query")
+
+    database_schema = table_service.get_database_schema()
+    [entries, schema] = table_service.execute_query(query)
+
+    return render_template(
+        "table.html",
+        tablename=tablename,
+        entries=entries,
+        schema=schema,
+        database_schema=database_schema,
+    )
