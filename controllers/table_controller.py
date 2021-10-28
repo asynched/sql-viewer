@@ -1,85 +1,46 @@
 from flask import Blueprint, render_template, request
 from database import Database
-from utils import parse_results, parse_schema
+from utils import parse_results
+from services.table_service import TableService
 from math import ceil
 
 table_controller = Blueprint("table_controller", __name__)
 
 database = Database()
+table_service = TableService(database)
 
 
 @table_controller.get("/")
 def get_tables():
-    query = """
-        SELECT
-            name
-        FROM
-            sqlite_master
-        WHERE
-            type = 'table' AND
-            name NOT LIKE 'sqlite_%';
-    """
-
-    results = database.cursor.execute(query).fetchall()
-
-    parsed_results = [result for (result,) in results]
-
-    print(parsed_results)
-
-    return render_template("index.html", tablenames=parsed_results)
+    tables = table_service.get_tables()
+    return render_template("index.html", tables=tables)
 
 
-@table_controller.get("/<tablename>")
+@table_controller.get("/tables/<tablename>")
 def get_table(tablename):
-    offset = int(request.args.get("offset", 0))
-    pagesize = int(request.args.get("pagesize", 16))
+    tables = table_service.get_tables()
+    database_schema = []
 
-    schema_query = (
-        """
-        PRAGMA table_info(%s) 
-    """
-        % tablename
+    for table in tables:
+        database_schema.append(
+            {"table": table, "schema": table_service.get_table_schema(table)}
+        )
+
+    schema = table_service.get_table_schema(tablename)
+    entries = table_service.get_table_entries(
+        tablename,
+        schema=schema,
     )
-
-    results_query = (
-        """
-        SELECT
-            *
-        FROM
-            %s
-        LIMIT
-            ?, ?;
-    """
-        % tablename
-    )
-
-    pages_query = (
-        """
-        SELECT
-            COUNT(*)
-        FROM
-            %s;
-    """
-        % tablename
-    )
-
-    raw_schema = database.cursor.execute(schema_query).fetchall()
-    raw_results = database.cursor.execute(results_query, (offset, pagesize)).fetchall()
-    raw_pages = database.cursor.execute(pages_query).fetchall()
-
-    pages = ceil(raw_pages[0][0] / int(pagesize))
-
-    [results, schema] = parse_results(raw_results, raw_schema)
-
-    previous_page = offset - 1 if offset > 0 else 0
-    next_page = offset + 1 if offset < pages - 1 else offset
 
     return render_template(
-        "table_page.html",
+        "table.html",
         tablename=tablename,
-        results=results,
+        entries=entries,
         schema=schema,
-        pages=pages,
-        previous_page=previous_page,
-        next_page=next_page,
+        database_schema=database_schema,
     )
+
+
+@table_controller.get("/editor")
+def get_editor():
+    return render_template("editor.html")

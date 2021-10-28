@@ -1,5 +1,6 @@
 import sqlite3 as sql
 from pathlib import Path
+from config import DATABASE_FILENAME
 
 
 class Database:
@@ -8,6 +9,6 @@ class Database:
     def __init__(self):
         print(Database.ROOT_PATH)
         self.connection = sql.connect(
-            Database.ROOT_PATH / "northwind.sqlite3", check_same_thread=False
+            Database.ROOT_PATH / DATABASE_FILENAME, check_same_thread=False
         )
         self.cursor = self.connection.cursor()

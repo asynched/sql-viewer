@@ -1,0 +1,58 @@
+:root {
+  --black-900: #121212;
+  --black-800: #202020;
+  --black-700: #323232;
+}
+
+.bg-black-900 {
+  background: var(--black-900);
+}
+
+.bg-black-800 {
+  background: var(--black-800);
+}
+
+details {
+  user-select: none;
+}
+
+details summary svg {
+  transform: rotate(90deg);
+}
+
+details[open] summary svg {
+  transform: rotate(-90deg);
+}
+
+details[open] summary ~ * {
+  animation: ease-opacity-t-b 0.5s ease;
+}
+
+summary {
+  cursor: pointer;
+}
+svg {
+  transition: all 0.3s;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--black-900);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  background: var(--black-700);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--black-900);
+}

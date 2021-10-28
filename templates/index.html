@@ -1,18 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SQL Viewer</title>
-  <script src="https://cdn-tailwindcss.vercel.app/3.0.0-alpha.1"></script>
-</head>
-<body>
-  <h1>SQLITE Viewer</h1>
-  {% for table in tablenames %}
-    <p>
-      <a href="{{ '/' + table }}">{{ table }}</a>
-    </p>
-  {% endfor %}
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SQL Viewer</title>
+    <script src="https://cdn-tailwindcss.vercel.app/3.0.0-alpha.1"></script>
+    <link rel="stylesheet" href="/static/css/globals.css" />
+  </head>
+  <body class="bg-[#202020] text-white">
+    <main class="py-16 mx-auto w-[90%] max-w-screen-xl">
+      <h1 class="mb-8 text-6xl font-bold tracking-tighter text-yellow-400">
+        SQL Viewer
+      </h1>
+      <h2 class="mb-8 text-4xl font-bold tracking-tighter">Tables</h2>
+      <div class="grid grid-cols-4 gap-4">
+        {% for table in tables %}
+        <a
+          class="
+            bg-yellow-400
+            text-black
+            py-2
+            px-4
+            rounded
+            transition
+            hover:brightness-90
+          "
+          href="{{ '/tables/' + table }}"
+          >{{ table }}</a
+        >
+        {% endfor %}
+      </div>
+    </main>
+  </body>
 </html>
