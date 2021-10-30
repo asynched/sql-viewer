@@ -2,6 +2,7 @@
   --black-900: #121212;
   --black-800: #202020;
   --black-700: #323232;
+  --black-600: #404040;
 }
 
 .bg-black-900 {
@@ -40,8 +41,8 @@ summary::-webkit-details-marker {
 }
 
 ::-webkit-scrollbar {
-  width: 0.5rem;
-  height: 0.5rem;
+  width: 0.75rem;
+  height: 0.75rem;
 }
 
 ::-webkit-scrollbar-track {
@@ -49,8 +50,12 @@ summary::-webkit-details-marker {
 }
 
 ::-webkit-scrollbar-thumb {
-  border-radius: 9999px;
+  border-radius: 0.125rem;
   background: var(--black-700);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--black-600);
 }
 
 ::-webkit-scrollbar-corner {

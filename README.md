@@ -22,16 +22,16 @@ DATABASE_FILENAME="$YOUR_DATABASE_FILENAME"
 2. Install the dependencies
 
 ```sh
-$ pip install -r requirements.txt
+$ make install
 ```
 
 3. Run the server
 
 ```sh
-$ python main.py
+$ make run
 ```
 
-4. Done! Now you should be able to access your client in the url http://localhost:8000/
+4. Done! Now you should be able to access your client in the url http://localhost:8081/
 
 ## Author
 

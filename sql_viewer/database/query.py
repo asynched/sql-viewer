@@ -60,6 +60,18 @@ class QueryResult:
         )
 
     @property
+    def safe_dict(self):
+        parsed_results = []
+
+        for result in self.results:
+            parsed = []
+            for index, item in enumerate(result):
+                parsed.append({"key": self.schema[index], "value": item})
+            parsed_results.append(parsed)
+
+        return parsed_results
+
+    @property
     def json(self):
         data = []
 

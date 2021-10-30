@@ -2,8 +2,3 @@
 **/__pycache__
 **/venv
 **/.vscode
-
-# Files
-*.sqlite3
-*.env
-*.db

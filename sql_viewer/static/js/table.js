@@ -1,13 +1,13 @@
 function handleQueryClick() {
-  const query = localStorage.getItem("sql-viewer:document") || ""
+  const query = localStorage.getItem('sql-viewer:document') || ''
   postForm({
     location: window.location.pathname,
     parameters: [
       {
         name: 'query',
         value: query,
-      }
-    ]
+      },
+    ],
   })
 }
 
@@ -34,12 +34,13 @@ const editor = CodeMirror.fromTextArea(document.querySelector('textarea'), {
   lineNumbers: true,
   height: '100%',
   mode: 'sql',
+  keyMap: 'sublime',
   theme: 'dracula',
 })
 
-editor.setValue(localStorage.getItem("sql-viewer:document") || "")
+editor.setValue(localStorage.getItem('sql-viewer:document') || '')
 
-editor.on("change", (editor) => {
+editor.on('change', editor => {
   const line = editor.doc.children[0].lines.map(line => line.text).join('\n')
-  localStorage.setItem("sql-viewer:document", line)
+  localStorage.setItem('sql-viewer:document', line)
 })

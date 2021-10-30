@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap');
+
 .cm-s-dracula.CodeMirror,
 .cm-s-dracula .CodeMirror-gutters {
   background-color: #121212 !important;
@@ -87,5 +89,11 @@
 
 .CodeMirror {
   height: 100% !important;
-  font-size: 16px;
+  font-family: 'IBM Plex Mono', sans-serif !important;
+  font-size: 15px !important;
+}
+
+.CodeMirror-cursor {
+  border-left: solid 0.25rem rgba(255, 255, 255, 0.5) !important;
+  border-right: solid 0.25rem rgba(255, 255, 255, 0.5) !important;
 }
