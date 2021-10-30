@@ -4,7 +4,7 @@ A browser UI client for your SQLite database. 😸
 
 ## Preview
 
-![Client running within the browser](public/thumbnail.jpeg)
+![Client running within the browser](sql_viewer/public/thumbnail.jpeg)
 
 ## Requirements
 
