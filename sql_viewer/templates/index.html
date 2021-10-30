@@ -7,20 +7,23 @@ content %}
   <h2 class="mb-8 text-4xl font-bold tracking-tighter">Tables</h2>
   <div class="grid grid-cols-4 gap-4">
     {% for table in tables %}
-    <a
-      class="
-        bg-yellow-400
-        text-black
-        py-2
-        px-4
-        rounded
-        transition
-        hover:brightness-90
-      "
-      href="{{ '/tables/' + table.name }}"
-      >{{ table.name }}</a
-    >
+    <a href="/tables/{{ table.name }}"
+      class="bg-[#202020] p-4 flex flex-col items-start rounded-xl border border-[#323232] transition transform duration-300 hover:shadow-xl hover:-translate-y-2">
+      <div class="bg-yellow-400 p-4 rounded-full">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#121212]" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+        </svg>
+      </div>
+      <h1 class="pt-4 text-xl font-bold text-white tracking-tighter uppercase">{{ table.name }}</h1>
+      <p class="text-[#565656]">Click on the card to open the {{ table.name }} table</p>
+    </a>
     {% endfor %}
+  </div>
+  <div class="mt-8 text-center text-lg">
+    Support the project by giving it a star on <a class="text-yellow-400 hover:underline"
+      href="https://github.com/Nxrth-x/sql-viewer" target="_blank">GitHub</a>
   </div>
 </main>
 {% endblock %}

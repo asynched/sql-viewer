@@ -11,7 +11,7 @@
 <li>
   <details class="mb-2 outline-none">
     <summary class="
-        pl-2
+        px-2
         mb-1
         flex
         items-center
@@ -20,26 +20,30 @@
         transition
         hover:bg-[#323232]
       ">
-      <span>{{ schema.name }}</span>
-      <a class="
-          py-1
-          px-2
-          bg-yellow-400
-          text-xs
-          text-black
-          rounded
-          transition
-          hover:brightness-75
-        " href="{{ '/tables/' + schema.name }}">Open
+      <div class="flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+        <span>{{ schema.name }}</span>
+      </div>
+      <a href="{{ '/tables/' + schema.name }}" title="Open the table '{{ schema.name }}'">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-5 text-yellow-400" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+        </svg>
       </a>
     </summary>
-    <div class="border-l border-[#323232] ml-2">
+    <div class="border-l border-[#323232] ml-4">
       {{ table_schema_info(schema.schema) }}
     </div>
   </details>
 </li>
-{% endmacro %} {% macro sql_editor() %}
-<form class="w-full h-[50vh] border-b border-[#323232] relative" method="POST">
+{% endmacro %}
+
+{% macro sql_editor() %}
+<form class="w-full h-[60vh] border-b border-[#323232] relative" method="POST">
   <button type="button" class="
       absolute
       top-0
@@ -65,15 +69,52 @@
   <h2 class="text-4xl font-bold tracking-tighter text-yellow-400 uppercase">
     {{ tablename }}
   </h2>
-  <button
-    class="py-1 mt-8 mb-4 font-bold tracking-tighter text-center text-[#121212] bg-yellow-400 rounded hover:brightness-90">
-    <a href="/editor">Editor</a>
-  </button>
+  <p class="mt-12 mb-2">{{"You're currently viewer records for table " + tablename + "." if tablename != "Editor" else
+    "You're currently on the editor page"}}</p>
+  <div class="mb-8 grid grid-cols-2 gap-2">
+    <a href="/" class="py-1 tracking-tighter text-center text-[#121212] bg-yellow-400 rounded hover:brightness-90">
+      Home
+    </a>
+    <a href="/editor"
+      class="py-1 tracking-tighter text-center text-[#121212] bg-yellow-400 rounded hover:brightness-90">
+      Editor
+    </a>
+  </div>
   <h3 class="my-4 text-2xl font-bold tracking-tighter">Entities</h3>
-  <ul class="w-full">
+  <ul class="w-full text-gray-200">
     {% for schema in database_schema %}
     {{ table_schema(schema) }}
     {% endfor %}
   </ul>
 </nav>
+{% endmacro %}
+
+{% macro table_view(entries, size = "full") %}
+<div
+  class="h-[{{ 'calc(100vh-3rem)' if size == 'full' else 'calc(40vh-3rem)' }}] overflow-auto bg-[#121212] text-gray-300">
+  <table class="w-full text-sm relative">
+    <thead class="border-b border-[#323232] sticky top-0">
+      <tr class="bg-[#121212] text-left">
+        {% for column_name in entries.schema %}
+        <th class="py-2 px-4 transition hover:bg-[#323232]">
+          {{ column_name }}
+        </th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in entries.results %}
+      <tr class="{{ 'bg-[#161616]' if loop.index0 % 2 == 0 else 'bg-[#121212]' }}">
+        {% for value in item %}
+        <td class="py-2 px-4 truncate hover:bg-[#323232]">{{ value }}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<div class="border-t border-[#323232] px-4 h-[3rem] flex items-center justify-between text-gray-300">
+  <p><b>Time:</b> {{ "%.5f"|format(entries.time) }}s</p>
+  <p><b>Items:</b> {{ entries.items }}</p>
+</div>
 {% endmacro %}
