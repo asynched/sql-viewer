@@ -1,22 +1,18 @@
 from flask import Blueprint, render_template, request
-from database import Database
-from utils import parse_results
-from services.table_service import TableService
-from math import ceil
+from sql_viewer.database import Database
+from sql_viewer.services.table_service import TableService
 
-table_controller = Blueprint("table_controller", __name__)
-
-database = Database()
-table_service = TableService(database)
+table = Blueprint("table_controller", __name__, url_prefix="/")
+table_service = TableService(Database())
 
 
-@table_controller.get("/")
+@table.get("/")
 def get_tables():
     tables = table_service.get_tables()
     return render_template("index.html", tables=tables)
 
 
-@table_controller.get("/tables/<tablename>")
+@table.get("/tables/<tablename>")
 def get_table(tablename):
     database_schema = table_service.get_database_schema()
     schema = table_service.get_table_schema(tablename)
@@ -34,7 +30,7 @@ def get_table(tablename):
     )
 
 
-@table_controller.post("/tables/<tablename>")
+@table.post("/tables/<tablename>")
 def execute_query(tablename: str):
     query = request.form.get("query")
 

@@ -6,3 +6,4 @@
 # Files
 *.sqlite3
 *.env
+*.db

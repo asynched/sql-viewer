@@ -1,5 +1,11 @@
-from database import Database
-from utils import parse_column_names, parse_query, parse_schema, parse_results
+from sql_viewer.database import Database
+from sql_viewer.errors.decorators import monadic
+from sql_viewer.utils import (
+    parse_column_names,
+    parse_query,
+    parse_schema,
+    parse_results,
+)
 
 
 class TableService:
@@ -95,3 +101,11 @@ class TableService:
         parsed_results = parse_query(results, column_names)
         schema = [{"column": column} for column in column_names]
         return [parsed_results, schema]
+
+    @monadic
+    def get_api_tables(self):
+        query = self.database.query(
+            "SELECT name, type, tbl_name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'"
+        )
+
+        return query.execute()

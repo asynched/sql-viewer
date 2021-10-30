@@ -1,9 +1,15 @@
 from flask import Flask
-from controllers.table_controller import table_controller
+from sql_viewer.controllers.table_controller import table as table_controller
+from sql_viewer.controllers.api_controller import api as api_controller
 
-app = Flask(__name__, template_folder="templates", static_folder="static")
+app = Flask(
+    __name__,
+    template_folder="sql_viewer/templates",
+    static_folder="sql_viewer/static",
+)
 
-app.register_blueprint(table_controller, url_prefix="/")
+app.register_blueprint(table_controller)
+app.register_blueprint(api_controller)
 
 if __name__ == "__main__":
     app.run(debug=True, port=8000)

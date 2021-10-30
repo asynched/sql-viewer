@@ -1,0 +1,49 @@
+<!-- Renders an item of the navbar inside the template -->
+{% macro table_schema_info(info) %}
+{% for item in info %}
+<div class="my-1 mx-2 flex items-center justify-between text-gray-400 text-sm">
+  <p>{{ item.column }}</p>
+  <p>{{ item.type.upper() }}</p>
+</div>
+{% endfor %}
+{% endmacro %}
+
+<!-- Renders the navbar with the table schema inside the template -->
+{% macro table_schema(schema) %}
+<li>
+  <details class="mb-4 outline-none">
+    <summary class="
+        pl-2
+        mb-2
+        flex
+        items-center
+        justify-between
+        rounded
+        transition
+        hover:bg-[#323232]
+      ">
+      <span>{{ schema.table }}</span>
+      <a class="
+          py-1
+          px-2
+          bg-yellow-400
+          text-sm text-black
+          rounded
+          transition
+          hover:brightness-75
+        " href="{{ '/tables/' + schema.table }}">Open
+      </a>
+    </summary>
+    {{ table_schema_info(schema.schema) }}
+  </details>
+</li>
+{% endmacro %}
+
+{% macro sql_editor() %}
+<form class="w-full h-[50vh] border-b border-[#323232] relative" method="POST">
+  <button type="button"
+    class="absolute top-0 right-0 py-2 px-4 bg-yellow-400 text-black rounded-bl-lg z-50 transition hover:brightness-90"
+    onclick="handleQueryClick()">Execute</button>
+  <textarea name="query"></textarea>
+</form>
+{% endmacro %}
