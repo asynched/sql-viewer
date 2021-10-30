@@ -1,6 +1,7 @@
 import logging
 from flask import Flask
 from rich.logging import RichHandler
+from sql_viewer.config import APPLICATION_PORT
 from sql_viewer.controllers.table_controller import table as table_controller
 from sql_viewer.controllers.api_controller import api as api_controller
 
@@ -22,4 +23,4 @@ app.register_blueprint(table_controller)
 app.register_blueprint(api_controller)
 
 if __name__ == "__main__":
-    app.run(debug=True, port=8081)
+    app.run(debug=True, port=APPLICATION_PORT)
