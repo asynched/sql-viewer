@@ -57,3 +57,7 @@ summary::-webkit-details-marker {
 ::-webkit-scrollbar-corner {
   background: var(--black-900);
 }
+
+@tailwind base;
+@tailwind utilities;
+@tailwind components;
